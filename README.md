@@ -1,1 +1,1 @@
-# vue-app
+# VueJS-app
