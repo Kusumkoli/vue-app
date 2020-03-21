@@ -1,17 +1,37 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Header/>
+    <Listmenu 
+      :listitem= "listitems"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Header from './components/Header.vue'
+import Listmenu from './components/Listmenu.vue'
 
 export default {
-  name: 'App',
+  name: 'app',
   components: {
-    HelloWorld
+    Header,
+    Listmenu
+  },
+  data() {
+      return {
+        listitems: ''
+      }  
+  },
+  mounted: function() {
+    fetch('http://www.randomtext.me/api',{
+      method: 'get'
+    })
+      .then((response) => {
+        console.log(response.json())
+    })
+      .then((jsonData) => {
+      this.listitems = jsonData.text_out
+    })
   }
 }
 </script>
