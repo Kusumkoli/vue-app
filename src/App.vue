@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <Header/>
-    <Listmenu 
-      :listitem= "listitems"
-    />
+    <Listmenu />
   </div>
 </template>
 
@@ -18,20 +16,18 @@ export default {
     Listmenu
   },
   data() {
-      return {
-        listitems: ''
-      }  
+    return {
+      listitems: []
+    }  
   },
   mounted: function() {
-    fetch('http://www.randomtext.me/api',{
-      method: 'get'
-    })
+    fetch('http://www.randomtext.me/api')
       .then((response) => {
-        console.log(response.json())
-    })
-      .then((jsonData) => {
-      this.listitems = jsonData.text_out
-    })
+        return response.json();
+      })
+      .then((data) => {
+        this.$data.listitems = data.text_out.split("\r");
+      })
   }
 }
 </script>
