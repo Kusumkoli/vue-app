@@ -236,6 +236,16 @@ h1 {
   cursor: pointer;
 }
 
+@media screen and (max-width: 800px) {
+  .modal-content {
+    flex-direction: column;
+  }
+
+  .list_items {
+    margin: 10px;
+  }
+}
+
 </style>
 
 

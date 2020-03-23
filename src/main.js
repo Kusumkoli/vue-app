@@ -4,7 +4,7 @@ import App from './App.vue'
 Vue.config.productionTip = false
 
 Vue.filter('subStr', function(string) {
-    return string.substring(3,20);
+    return string.substring(3,40);
 })
 
 new Vue({
