@@ -1,44 +1,46 @@
 <template>
   <div id="app">
-    <h1>Fetchin Data from APi</h1>
+    <h1>Fetching API Data</h1>
     <div class="sticky">
       Scrolled to bottom: {{ scrolledToBottom }} 
     </div>
-    <div>
+    <div class="list_items">
       <div class="myBtn" v-on:click="openModal(); addData0();">
-        <p>List 1</p>
+        <p v-bind:title="queue"><b>Time:</b> {{queue[0].time}}</p>
         <p v-bind:title="queue">{{queue[0].text_out | subStr}} ....</p>
       </div>
       <div class="myBtn" v-on:click="openModal(); addData1();">
-        <p>List 2</p>
+        <p v-bind:title="queue"><b>Time:</b> {{queue[1].time}}</p>
         <p v-bind:title="queue">{{queue[1].text_out | subStr}} ....</p>
       </div>
       <div class="myBtn" v-on:click="openModal(); addData2();">
-        <p>List 3</p>
+        <p v-bind:title="queue"><b>Time:</b> {{queue[2].time}}</p>
         <p v-bind:title="queue">{{queue[2].text_out | subStr}} ....</p>
       </div>
       <div class="myBtn" v-on:click="openModal(); addData3();">
-        <p>List 4</p>
+        <p v-bind:title="queue"><b>Time:</b> {{queue[3].time}}</p>
         <p v-bind:title="queue">{{queue[3].text_out | subStr}} ....</p>
       </div>
       <div class="myBtn" v-on:click="openModal(); addData4();">
-        <p>List 5</p>
+        <p v-bind:title="queue"><b>Time:</b> {{queue[3].time}}</p>
         <p v-bind:title="queue">{{queue[4].text_out | subStr}} ....</p>
       </div>
     </div>
     <div id="myModal" class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
-        <ul v-bind:title = "apidata">
-          <li class="items">type: {{ apidata.type }}</li>
-          <li class="items">format: {{ apidata.format }}</li>
-          <li class="items">number: {{ apidata.number }}</li>
-          <li class="items">number_max: {{ apidata.number_max }}</li>
-          <li class="items">amount: {{ apidata.amount }}</li>
-          <li class="items">time: {{ apidata.time }}</li>
-          <li class="items" v-html="apidata.text_out"></li>
-        </ul>
-        <img src="https://picsum.photos/350">
+        <div class="api_data" v-bind:title = "apidata">
+          <p class="items"><b>type:</b> {{ apidata.type }}</p>
+          <p class="items"><b>format:</b> {{ apidata.format }}</p>
+          <p class="items"><b>number:</b> {{ apidata.number }}</p>
+          <p class="items"><b>number_max:</b> {{ apidata.number_max }}</p>
+          <p class="items"><b>amount:</b> {{ apidata.amount }}</p>
+          <p class="items"><b>time:</b> {{ apidata.time }}</p>
+          <p class="items" v-html="apidata.text_out"></p>
+        </div>
+        <div class="picsum_img">
+          <img src="https://picsum.photos/350">
+        </div>
       </div>
     </div>
   </div> 
@@ -145,8 +147,10 @@ export default {
 }
 
 .sticky {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  right: 0%;
+  top: 0%;
+  padding: 20px;
 }
 
 .modal {
@@ -160,23 +164,69 @@ export default {
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  text-align: left;
+  color: #17252a;
 }
 
 /* Modal Content/Box */
 .modal-content {
-  background-color: #fefefe;
+  background-color: #feffff;
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.myBtn p {
+  cursor: pointer;
+}
+
+.list_items {
+  margin: 50px 100px;
+}
+
+.myBtn {
+  padding: 20px;
+  cursor: pointer;
+  margin: 10px;
+  text-align: left;
+}
+
+.myBtn:nth-child(even) {
+  background-color: #def2f1;
+} 
+
+.myBtn:nth-child(odd) {
+  background-color: #3aafa9;
+} 
+
+.api_data {
+  padding: 20px;
+  font-size: 15px; 
+}
+
+.picsum_img {
+  display: grid;
+  align-content: center;
+  justify-content: center;
 }
 
 /* The Close Button */
 .close {
   color: #aaa;
-  float: right;
+  position: absolute;
+  right: 0%;
+  top: 0%;
   font-size: 28px;
   font-weight: bold;
+  padding: 5px 10px;
+}
+
+h1 {
+  color: #2b7a78;
 }
 
 .close:hover,
