@@ -1,97 +1,137 @@
 <template>
   <div id="app">
-    <Listmenu />
+    <h1>Fetchin Data from APi</h1>
     <div class="sticky">
-      Scrolled to bottom: {{ scrolledToBottom }}
-      
+      Scrolled to bottom: {{ scrolledToBottom }} 
     </div>
-    <button id="myBtn">
-      <p>List 1</p>
-      <p>{{text_out | subStr }} ....</p>
-    </button>
-    <button id="myBtn">
-      <p>List 2</p>
-      <p>{{text_out | subStr }} ....</p>
-    </button>
-    <button id="myBtn">
-      <p>List 3</p>
-      <p>{{text_out | subStr }} ....</p>
-    </button>
-    <button id="myBtn">
-      <p>List 3</p>
-      <p>{{text_out | subStr }} ....</p>
-    </button>
+    <div>
+      <div class="myBtn" v-on:click="openModal(); addData0();">
+        <p>List 1</p>
+        <p v-bind:title="queue">{{queue[0].text_out | subStr}} ....</p>
+      </div>
+      <div class="myBtn" v-on:click="openModal(); addData1();">
+        <p>List 2</p>
+        <p v-bind:title="queue">{{queue[1].text_out | subStr}} ....</p>
+      </div>
+      <div class="myBtn" v-on:click="openModal(); addData2();">
+        <p>List 3</p>
+        <p v-bind:title="queue">{{queue[2].text_out | subStr}} ....</p>
+      </div>
+      <div class="myBtn" v-on:click="openModal(); addData3();">
+        <p>List 4</p>
+        <p v-bind:title="queue">{{queue[3].text_out | subStr}} ....</p>
+      </div>
+      <div class="myBtn" v-on:click="openModal(); addData4();">
+        <p>List 5</p>
+        <p v-bind:title="queue">{{queue[4].text_out | subStr}} ....</p>
+      </div>
+    </div>
     <div id="myModal" class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
-        <ul>
-      <li class="items">type: {{ type }}</li>
-      <li class="items">format: {{ format }}</li>
-      <li class="items">number: {{ number }}</li>
-      <li class="items">number_max: {{ number_max }}</li>
-      <li class="items">amount: {{ amount }}</li>
-      <li class="items">time: {{ time }}</li>
-      <li class="items" v-html="text_out"></li>
-    </ul>
-    <img src="https://picsum.photos/350">
+        <ul v-bind:title = "apidata">
+          <li class="items">type: {{ apidata.type }}</li>
+          <li class="items">format: {{ apidata.format }}</li>
+          <li class="items">number: {{ apidata.number }}</li>
+          <li class="items">number_max: {{ apidata.number_max }}</li>
+          <li class="items">amount: {{ apidata.amount }}</li>
+          <li class="items">time: {{ apidata.time }}</li>
+          <li class="items" v-html="apidata.text_out"></li>
+        </ul>
+        <img src="https://picsum.photos/350">
       </div>
     </div>
   </div> 
 </template>
 
 <script>
-import Listmenu from './components/Listmenu.vue'
+
 import main from './main.js'
 
 export default {
   name: 'app',
   components: {
-    Listmenu
   },
   data() {
     return {
-      type : '',
-      format: '',
-      number: 10, 
-      number_max: 100,
-      amount: 10,
-      time: '',
-      text_out: '',
-      scrolledToBottom: false
+      queue: [],
+      scrolledToBottom: false,
+      apidata: {
+        type : '',
+        format: '',
+        number: 10, 
+        number_max: 100,
+        amount: 10,
+        time: '',
+        text_out: ''        
+      }
     }
   },
   function() {
     return main
   },
   methods : {
-    scroll () {
+    openModal: function() {
+      var modal = document.getElementById("myModal");
+      var span = document.getElementsByClassName("close");
+      modal.style.display = "block";
+      span[0].onclick = function() {
+        modal.style.display = "none";
+      }
+
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    },
+    scroll: function() {
       window.onscroll = () => {
         let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight === document.documentElement.offsetHeight
 
         if (bottomOfWindow) {
-          this.scrolledToBottom = true // replace it with your code
+          this.scrolledToBottom = true //replace it with your code
         }
       }
-    }
-  },
-  mounted: function() {
-    fetch('http://www.randomtext.me/api')
+    },
+    fetchdata: function() {
+      fetch('http://www.randomtext.me/api')
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data.type)
-        this.$data.type = data.type
-        this.$data.format = data.format
-        this.$data.number = data.number
-        this.$data.number_max = data.number_max
-        this.$data.amount = data.amount
-        this.$data.time = data.time
-        this.$data.text_out = data.text_out
+        this.$data.apidata = data
+        this.queue.push({...this.apidata})
       }),
       this.scroll()
+    },
+
+    addData0: function() {
+      this.$data.apidata = this.queue[0]
+      console.log(this.apidata)
+    },
+    addData1: function() {
+      this.$data.apidata = this.queue[1]
+      console.log(this.apidata)
+    },
+    addData2: function() {
+      this.$data.apidata = this.queue[2]
+      console.log(this.apidata)
+    },
+    addData3: function() {
+      this.$data.apidata = this.queue[3]
+      console.log(this.apidata)
+    }
+  },
+  mounted() {
+    this.fetchdata()
+    this.fetchdata()
+    this.fetchdata()
+    this.fetchdata()
+    this.fetchdata()
+    console.log(this.queue)
+    }  
   }
-};
 </script>
 
 <style>
@@ -104,32 +144,34 @@ export default {
   margin-top: 60px;
 }
 
-#myBtn {
-  display: block;
-  margin: 100px 0px;
+.sticky {
+  position: sticky;
+  top: 0;
 }
 
 .modal {
-  display: none;
-  position: fixed; 
-  z-index: 1; 
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
   left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4); 
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+/* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto;
+  margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; 
+  width: 80%; /* Could be more or less, depending on screen size */
 }
 
+/* The Close Button */
 .close {
   color: #aaa;
   float: right;
@@ -137,15 +179,11 @@ export default {
   font-weight: bold;
 }
 
-.close:hover, .close:focus {
+.close:hover,
+.close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
-}
-
-.sticky {
-  position: sticky;
-  top: 0;
 }
 
 </style>
