@@ -17,9 +17,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/)
 2. ESLint
 
 ### Problem Approach
-```
 The basic approach followed is to fetch data from randomtext.me/api multiple times and push the data object into an array so as to store an array of objects. And then display a preview of data which on-click opens a modal dialog box displaying all the data from API fetch along with a picture from 'picsum.photos'
-```
+
 ### Brief
 ```
 The most important part of the application lies in App.vue. The page is responsive. 
